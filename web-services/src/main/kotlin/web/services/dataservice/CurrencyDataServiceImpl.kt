@@ -14,7 +14,6 @@ import web.services.model.response.GetSymbolResponse
 import web.services.model.response.WebServiceError
 
 class CurrencyDataServiceImpl(
-    private val webServiceEnv: WebServiceEnv,
     private val client: HttpClient,
 ) : CurrencyDataService {
 
@@ -24,23 +23,17 @@ class CurrencyDataServiceImpl(
     }
 
     override suspend fun getSymbols(): GetSymbolResponse {
-        return client.request(webServiceEnv.baseUrl + SYMBOLS_OPERATION) {
+        return client.request(SYMBOLS_OPERATION) {
             method = HttpMethod.Get
-            headers {
-                append("apiKey", webServiceEnv.apiKey)
-            }
         }.body<GetSymbolResponse>()
     }
 
     override suspend fun convert(convertCurrency: ConvertCurrencyWSRequest): ConvertCurrencyWSResponse {
-        val response: HttpResponse = client.get(webServiceEnv.baseUrl + CONVERT_OPERATION) {
+        val response: HttpResponse = client.get(CONVERT_OPERATION) {
             url {
                 parameters.append("from", convertCurrency.from)
                 parameters.append("to", convertCurrency.to)
                 parameters.append("amount", convertCurrency.amount.toString())
-            }
-            headers {
-                append("apiKey", webServiceEnv.apiKey)
             }
         }
         val statusCode = response.status

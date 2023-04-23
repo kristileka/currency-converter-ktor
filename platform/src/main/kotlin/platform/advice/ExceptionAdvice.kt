@@ -39,7 +39,7 @@ fun Application.configureAdvice() {
             }
         }
         status(
-            HttpStatusCode.UnsupportedMediaType
+            HttpStatusCode.UnsupportedMediaType,
         ) { call, _ ->
             call.respond(
                 HttpStatusCode.BadRequest,
@@ -47,6 +47,4 @@ fun Application.configureAdvice() {
             )
         }
     }
-
 }
-

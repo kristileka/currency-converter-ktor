@@ -10,6 +10,7 @@ data class ConvertCurrencyWSResponse(
     val result: Double? = null,
     val success: Boolean? = null,
 )
+
 @Serializable
 data class Info(
     val rate: Double,

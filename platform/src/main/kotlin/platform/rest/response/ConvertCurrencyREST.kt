@@ -8,7 +8,7 @@ data class ConvertCurrencyREST(
     val currencyFrom: String,
     val currencyTo: String,
     val currencyFromAmount: Double,
-    val currencyToAmount: Double,
+    val convertedAmount: Double,
 ) {
     companion object {
         fun fromCore(request: ConvertCurrencyDTO, amount: Double) = ConvertCurrencyREST(
