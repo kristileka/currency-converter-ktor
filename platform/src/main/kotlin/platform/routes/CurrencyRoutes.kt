@@ -7,13 +7,13 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import org.koin.ktor.ext.inject
-import platform.rest.request.ConvertCurrencyRequest
-import platform.rest.request.ConvertCurrencyRequest.Companion.toCore
-import platform.rest.response.ConvertCurrencyREST
+import platform.rest.request.ConvertCurrencyRequestREST
+import platform.rest.request.ConvertCurrencyRequestREST.Companion.toCore
+import platform.rest.response.ConvertCurrencyResponseREST
 import platform.rest.response.GetCurrenciesREST
 
 internal fun Routing.currencyRoutes() {
-    route("/v1/currency") {
+    route("/api/v1/currency") {
         getCurrencies()
         convertCurrency()
     }
@@ -31,8 +31,8 @@ private fun Route.getCurrencies() {
 private fun Route.convertCurrency() {
     val convertCurrencyService by inject<ConvertCurrencyService>()
     post("/convert") {
-        val request = call.receive<ConvertCurrencyRequest>()
+        val request = call.receive<ConvertCurrencyRequestREST>()
         val (response, responseAmount) = convertCurrencyService.execute(request.toCore())
-        call.respond(ConvertCurrencyREST.fromCore(response, responseAmount))
+        call.respond(ConvertCurrencyResponseREST.fromCore(response, responseAmount))
     }
 }

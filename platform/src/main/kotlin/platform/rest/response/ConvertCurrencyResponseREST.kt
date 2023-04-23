@@ -4,16 +4,16 @@ import core.dto.ConvertCurrencyDTO
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ConvertCurrencyREST(
+data class ConvertCurrencyResponseREST(
     val currencyFrom: String,
     val currencyTo: String,
     val currencyFromAmount: Double,
     val convertedAmount: Double,
 ) {
     companion object {
-        fun fromCore(request: ConvertCurrencyDTO, amount: Double) = ConvertCurrencyREST(
+        fun fromCore(request: ConvertCurrencyDTO, amount: Double) = ConvertCurrencyResponseREST(
             request.currencyFromCurrency,
-            request.currencyFromCurrency,
+            request.currencyToCurrency,
             request.currencyFromAmount,
             amount,
         )

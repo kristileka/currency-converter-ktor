@@ -6,11 +6,10 @@ import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import web.services.env.WebServiceEnv
 import web.services.model.exception.WebServicesException
 import web.services.model.request.ConvertCurrencyWSRequest
 import web.services.model.response.ConvertCurrencyWSResponse
-import web.services.model.response.GetSymbolResponse
+import web.services.model.response.GetSymbolResponseWS
 import web.services.model.response.WebServiceError
 
 class CurrencyDataServiceImpl(
@@ -22,10 +21,11 @@ class CurrencyDataServiceImpl(
         const val CONVERT_OPERATION = "convert"
     }
 
-    override suspend fun getSymbols(): GetSymbolResponse {
+    override suspend fun getSymbols(): GetSymbolResponseWS {
         return client.request(SYMBOLS_OPERATION) {
             method = HttpMethod.Get
-        }.body<GetSymbolResponse>()
+            contentType(ContentType.Application.Json)
+        }.body<GetSymbolResponseWS>()
     }
 
     override suspend fun convert(convertCurrency: ConvertCurrencyWSRequest): ConvertCurrencyWSResponse {
