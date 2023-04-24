@@ -40,11 +40,34 @@ fun Application.configureAdvice() {
         }
         status(
             HttpStatusCode.UnsupportedMediaType,
-        ) { call, _ ->
-            call.respond(
-                HttpStatusCode.BadRequest,
-                ExceptionResponse("Please provide proper request body.", HttpStatusCode.BadRequest.value),
-            )
+            HttpStatusCode.MethodNotAllowed,
+            HttpStatusCode.NotFound
+        ) { call, status ->
+            when (status) {
+                HttpStatusCode.MethodNotAllowed -> call.respond(
+                    HttpStatusCode.MethodNotAllowed,
+                    ExceptionResponse(
+                        "Please verify you are using the correct API.",
+                        HttpStatusCode.MethodNotAllowed.value
+                    ),
+                )
+
+                HttpStatusCode.NotFound -> call.respond(
+                    HttpStatusCode.NotFound,
+                    ExceptionResponse(
+                        "Path for api doesn't exist.",
+                        HttpStatusCode.NotFound.value
+                    ),
+                )
+
+                HttpStatusCode.UnsupportedMediaType -> call.respond(
+                    HttpStatusCode.UnsupportedMediaType,
+                    ExceptionResponse(
+                        "Please provide the correct body for the API.",
+                        HttpStatusCode.UnsupportedMediaType.value
+                    ),
+                )
+            }
         }
     }
 }
